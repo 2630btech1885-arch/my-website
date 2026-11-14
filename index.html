@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plant Paradise</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #f5f7ef;
+    color: #294b36;
+}
+
+header {
+    background: #244b35;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 32px;
+    margin-bottom: 8px;
+}
+
+nav {
+    background: #dce9d5;
+    padding: 15px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+nav button {
+    border: none;
+    background: #315d40;
+    color: white;
+    padding: 11px 17px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+nav button:hover {
+    background: #709b6c;
+}
+
+.page {
+    display: none;
+    padding: 30px 7%;
+    min-height: 75vh;
+}
+
+.page.active {
+    display: block;
+}
+
+.hero {
+    background: linear-gradient(120deg, #d8e9d2, #f3f5e8);
+    padding: 65px 25px;
+    text-align: center;
+    border-radius: 15px;
+}
+
+.hero h2 {
+    font-size: 38px;
+    margin-bottom: 15px;
+}
+
+.hero p {
+    font-size: 18px;
+    margin-bottom: 25px;
+}
+
+.main-btn {
+    background: #315d40;
+    color: white;
+    padding: 13px 25px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.main-btn:hover {
+    background: #709b6c;
+}
+
+h2.section-title {
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 30px;
+}
+
+.plant-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 22px;
+    margin-top: 25px;
+}
+
+.plant-card {
+    background: white;
+    border-radius: 12px;
+    padding: 18px;
+    text-align: center;
+    box-shadow: 0 3px 12px #00000012;
+}
+
+.plant-card img {
+    width: 100%;
+    height: 170px;
+    object-fit: cover;
+    border-radius: 9px;
+}
+
+.plant-card h3 {
+    margin: 12px 0;
+}
+
+.plant-card p {
+    margin: 8px;
+}
+
+.plant-card button {
+    background: #315d40;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.plant-card button:hover {
+    background: #709b6c;
+}
+
+.search-box {
+    width: 100%;
+    max-width: 500px;
+    display: block;
+    margin: 15px auto;
+    padding: 13px;
+    border: 1px solid #9bad94;
+    border-radius: 7px;
+    font-size: 15px;
+}
+
+form {
+    max-width: 500px;
+    margin: 20px auto;
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+}
+
+form input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #a9b9a3;
+    border-radius: 5px;
+}
+
+form button {
+    width: 100%;
+}
+
+.care-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.care-card {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    line-height: 1.7;
+}
+
+.order-card {
+    background: white;
+    margin: 15px auto;
+    max-width: 650px;
+    padding: 18px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.order-card button {
+    padding: 7px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background: #315d40;
+    color: white;
+    margin: 3px;
+}
+
+.total {
+    text-align: center;
+    font-size: 23px;
+    margin: 25px;
+    font-weight: bold;
+}
+
+footer {
+    background: #244b35;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+.empty {
+    text-align: center;
+    padding: 30px;
+    color: #71836d;
+}
+
+@media(max-width:600px) {
+    .hero h2 {
+        font-size: 27px;
+    }
+
+    .page {
+        padding: 25px 5%;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>🌿 Plant Paradise</h1>
+    <p>Bring Nature Closer to Your Home</p>
+</header>
+
+<nav>
+    <button onclick="showPage('home')">Home</button>
+    <button onclick="showPage('plants')">Plants Collection</button>
+    <button onclick="showPage('add')">Add Plant</button>
+    <button onclick="showPage('care')">Plant Care</button>
+    <button onclick="showPage('orders')">My Orders 🛒</button>
+</nav>
+
+<!-- HOME PAGE -->
+<section id="home" class="page active">
+
+    <div class="hero">
+        <h2>Welcome to Plant Paradise 🌱</h2>
+        <p>Discover beautiful plants and make your surroundings greener.</p>
+        <button class="main-btn" onclick="showPage('plants')">
+            Explore Plants
+        </button>
+    </div>
+
+    <h2 class="section-title" style="margin-top:40px">
+        Why Choose Us?
+    </h2>
+
+    <div class="care-grid">
+        <div class="care-card">
+            <h3>🌿 Fresh Plants</h3>
+            <p>Explore a variety of beautiful indoor and outdoor plants.</p>
+        </div>
+
+        <div class="care-card">
+            <h3>🛒 Easy Ordering</h3>
+            <p>Choose your favourite plants and add them to your orders.</p>
+        </div>
+
+        <div class="care-card">
+            <h3>🌻 Plant Care</h3>
+            <p>Learn simple tips to keep your plants healthy.</p>
+        </div>
+    </div>
+</section>
+
+<!-- PLANTS COLLECTION PAGE -->
+<section id="plants" class="page">
+
+    <h2 class="section-title">Our Plant Collection 🌿</h2>
+
+    <input
+        type="text"
+        id="search"
+        class="search-box"
+        placeholder="Search your favourite plant..."
+        oninput="displayPlants()"
+    >
+
+    <div id="plantList" class="plant-grid"></div>
+
+</section>
+
+<!-- ADD PLANT PAGE -->
+<section id="add" class="page">
+
+    <h2 class="section-title">Add Your Own Plant 🌱</h2>
+
+    <form onsubmit="addPlant(event)">
+
+        <h3 style="text-align:center">Enter Plant Details</h3>
+
+        <input
+            type="text"
+            id="plantName"
+            placeholder="Enter plant name"
+            required
+        >
+
+        <input
+            type="number"
+            id="plantPrice"
+            placeholder="Enter plant price"
+            min="1"
+            required
+        >
+
+        <input
+            type="url"
+            id="plantImage"
+            placeholder="Enter plant image URL (optional)"
+        >
+
+        <button type="submit" class="main-btn">
+            Add Plant
+        </button>
+
+    </form>
+
+    <p style="text-align:center">
+        Your added plants will automatically appear in the collection.
+    </p>
+
+</section>
+
+<!-- PLANT CARE PAGE -->
+<section id="care" class="page">
+
+    <h2 class="section-title">Plant Care Guide 🌻</h2>
+
+    <div class="care-grid">
+
+        <div class="care-card">
+            <h3>💧 Watering</h3>
+            <p>Water your plants according to their individual needs.
+            Check the soil before watering.</p>
+        </div>
+
+        <div class="care-card">
+            <h3>☀️ Sunlight</h3>
+            <p>Place plants where they receive suitable sunlight.
+            Some plants prefer indirect light.</p>
+        </div>
+
+        <div class="care-card">
+            <h3>🌱 Soil</h3>
+            <p>Use suitable soil with good drainage to support
+            healthy plant growth.</p>
+        </div>
+
+        <div class="care-card">
+            <h3>✂️ Pruning</h3>
+            <p>Remove dry leaves regularly to maintain plant health.</p>
+        </div>
+
+    </div>
+
+</section>
+
+<!-- MY ORDERS PAGE -->
+<section id="orders" class="page">
+
+    <h2 class="section-title">My Orders 🛒</h2>
+
+    <div id="orderList"></div>
+
+    <div id="total" class="total">Total: ₹0</div>
+
+</section>
+
+<footer>
+    <p>© 2026 Plant Paradise | Grow Green, Live Green 🌿</p>
+    <p>Made with HTML, CSS and JavaScript</p>
+</footer>
+
+<script>
+
+// PLANT DATA
+
+let plants = [
+    {
+        id: 1,
+        name: "Money Plant",
+        price: 150,
+        image: "https://images.unsplash.com/photo-1614594975525-e45190c55d0b?w=500"
+    },
+    {
+        id: 2,
+        name: "Snake Plant",
+        price: 250,
+        image: "https://images.unsplash.com/photo-1593482892290-f54927ae2b7d?w=500"
+    },
+    {
+        id: 3,
+        name: "Peace Lily",
+        price: 300,
+        image: "https://images.unsplash.com/photo-1593691509543-c55fb32e5cee?w=500"
+    },
+    {
+        id: 4,
+        name: "Aloe Vera",
+        price: 120,
+        image: "https://images.unsplash.com/photo-1509423350716-97f9360b4e09?w=500"
+    },
+    {
+        id: 5,
+        name: "Monstera",
+        price: 450,
+        image: "https://images.unsplash.com/photo-1616475339077-9e0b4c7c9c7c?w=500"
+    },
+    {
+        id: 6,
+        name: "Areca Palm",
+        price: 350,
+        image: "https://images.unsplash.com/photo-1597055181300-a8b4be5c1d5a?w=500"
+    }
+];
+
+let orders = [];
+
+let nextId = 7;
+
+
+// PAGE NAVIGATION
+
+function showPage(pageId) {
+
+    document.querySelectorAll(".page").forEach(page => {
+        page.classList.remove("active");
+    });
+
+    document.getElementById(pageId).classList.add("active");
+
+    if(pageId === "plants") {
+        displayPlants();
+    }
+
+    if(pageId === "orders") {
+        displayOrders();
+    }
+
+    window.scrollTo(0,0);
+}
+
+
+// DISPLAY PLANTS
+
+function displayPlants() {
+
+    let searchValue = document.getElementById("search").value.toLowerCase();
+
+    let container = document.getElementById("plantList");
+
+    container.innerHTML = "";
+
+    let filteredPlants = plants.filter(plant =>
+        plant.name.toLowerCase().includes(searchValue)
+    );
+
+    if(filteredPlants.length === 0) {
+        container.innerHTML = "<p class='empty'>No plants found!</p>";
+        return;
+    }
+
+    filteredPlants.forEach(plant => {
+
+        container.innerHTML += `
+            <div class="plant-card">
+
+                <img
+                    src="${plant.image}"
+                    alt="${plant.name}"
+                    onerror="this.src='https://placehold.co/400x250/dce9d5/315d40?text=Plant'"
+                >
+
+                <h3>${plant.name}</h3>
+
+                <p>Price: ₹${plant.price}</p>
+
+                <button onclick="orderPlant(${plant.id})">
+                    Order Now
+                </button>
+
+            </div>
+        `;
+
+    });
+
+}
+
+
+// ADD NEW PLANT
+
+function addPlant(event) {
+
+    event.preventDefault();
+
+    let name = document.getElementById("plantName").value.trim();
+
+    let price = Number(document.getElementById("plantPrice").value);
+
+    let image = document.getElementById("plantImage").value.trim();
+
+    if(!name || price <= 0) {
+        alert("Please enter valid plant details!");
+        return;
+    }
+
+    plants.push({
+        id: nextId++,
+        name: name,
+        price: price,
+        image: image || "https://placehold.co/400x250/dce9d5/315d40?text=Plant"
+    });
+
+    alert(name + " added successfully!");
+
+    document.querySelector("#add form").reset();
+
+    displayPlants();
+
+    showPage("plants");
+
+}
+
+
+// ORDER PLANT
+
+function orderPlant(id) {
+
+    let plant = plants.find(item => item.id === id);
+
+    if(!plant) return;
+
+    let existingOrder = orders.find(item => item.id === id);
+
+    if(existingOrder) {
+        existingOrder.quantity++;
+    } else {
+        orders.push({
+            id: plant.id,
+            name: plant.name,
+            price: plant.price,
+            quantity: 1
+        });
+    }
+
+    alert(plant.name + " added to your orders!");
+
+    displayOrders();
+
+}
+
+
+// DISPLAY ORDERS
+
+function displayOrders() {
+
+    let container = document.getElementById("orderList");
+
+    container.innerHTML = "";
+
+    let total = 0;
+
+    if(orders.length === 0) {
+
+        container.innerHTML =
+            "<p class='empty'>No orders yet. Explore our plants!</p>";
+
+    }
+
+    orders.forEach(item => {
+
+        let subtotal = item.price * item.quantity;
+
+        total += subtotal;
+
+        container.innerHTML += `
+
+            <div class="order-card">
+
+                <div>
+                    <h3>${item.name}</h3>
+                    <p>Price: ₹${item.price}</p>
+                    <p>Quantity: ${item.quantity}</p>
+                    <p>Subtotal: ₹${subtotal}</p>
+                </div>
+
+                <div>
+
+                    <button onclick="changeQuantity(${item.id}, 1)">+</button>
+
+                    <button onclick="changeQuantity(${item.id}, -1)">-</button>
+
+                    <button onclick="removeOrder(${item.id})">Remove</button>
+
+                </div>
+
+            </div>
+
+        `;
+
+    });
+
+    document.getElementById("total").innerText =
+        "Total: ₹" + total;
+
+}
+
+
+// CHANGE QUANTITY
+
+function changeQuantity(id, change) {
+
+    let item = orders.find(order => order.id === id);
+
+    if(!item) return;
+
+    item.quantity += change;
+
+    if(item.quantity <= 0) {
+        removeOrder(id);
+    } else {
+        displayOrders();
+    }
+
+}
+
+
+// REMOVE ORDER
+
+function removeOrder(id) {
+
+    orders = orders.filter(item => item.id !== id);
+
+    displayOrders();
+
+}
+
+
+// INITIAL DISPLAY
+
+displayPlants();
+displayOrders();
+
+</script>
+
+</body>
+</html>
